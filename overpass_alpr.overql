@@ -1,0 +1,14 @@
+// Canonical Overpass QL behind this repo.
+// Swap US-CA for any ISO 3166-2 state code (US-AL ... US-WY, plus US-DC).
+//
+// The area filter is the point of the whole exercise: asking for a state
+// boundary avoids trusting addr:city / addr:state, which are frequently
+// missing or inconsistent on contributed ALPR records.
+
+[out:json][timeout:180];
+area["ISO3166-2"="US-CA"][admin_level=4]->.a;
+(
+  node["man_made"="surveillance"]["surveillance:type"="ALPR"](area.a);
+  way["man_made"="surveillance"]["surveillance:type"="ALPR"](area.a);
+);
+out center tags;
